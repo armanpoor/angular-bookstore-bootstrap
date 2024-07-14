@@ -1,0 +1,7 @@
+<input [(ngModel)]="filter" placeholder="Search books by name" />
+<ul>
+  <li *ngFor="let book of filterBooks()">
+    {{ book.name }} - ${{ book.price }}
+    <a [routerLink]="['/book', book.id]">View Details</a>
+  </li>
+</ul>

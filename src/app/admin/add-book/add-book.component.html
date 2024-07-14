@@ -1,0 +1,11 @@
+<form [formGroup]="addBookForm" (ngSubmit)="onSubmit()">
+  <label for="name">Name:</label>
+  <input id="name" formControlName="name">
+  <label for="author">Author:</label>
+  <input id="author" formControlName="author">
+  <label for="price">Price:</label>
+  <input id="price" formControlName="price" type="number">
+  <label for="summary">Summary:</label>
+  <textarea id="summary" formControlName="summary"></textarea>
+  <button type="submit" [disabled]="addBookForm.invalid">Add Book</button>
+</form>

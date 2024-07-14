@@ -1,0 +1,8 @@
+<button (click)="addBook()">Add Book</button>
+<ul>
+  <li *ngFor="let book of books">
+    {{ book.name }} - {{ book.author }} - ${{ book.price }}
+    <button *ngIf="book.id" (click)="editBook(book.id)">Edit</button>
+    <button *ngIf="book.id" (click)="deleteBook(book.id)">Delete</button>
+  </li>
+</ul>
