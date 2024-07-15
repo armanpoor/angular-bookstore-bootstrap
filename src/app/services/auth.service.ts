@@ -22,15 +22,6 @@ export class AuthService {
     return this.http
       .post<LoginResponse>(`${this.apiUrl}/login`, { username, password })
       .pipe(
-        tap((response) => {
-          const token = response.token;
-          if (token !== null && token !== undefined) {
-            this.token = token as string;
-            localStorage.setItem('authToken', this.token);
-          } else {
-            this.token = ''; // Handle the case where token is undefined
-          }
-        }),
         map((response) => {
           if (response && response.token) {
             localStorage.setItem('currentUser', JSON.stringify(response));
