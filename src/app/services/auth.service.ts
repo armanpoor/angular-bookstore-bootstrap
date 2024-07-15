@@ -33,7 +33,7 @@ export class AuthService {
 
   logout() {
     this.token = '';
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('currentUser');
   }
 
   isAuthenticated(): boolean {
@@ -41,6 +41,7 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return this.token || null; // return an empty string if token is null
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    return currentUser?.token;
   }
 }
