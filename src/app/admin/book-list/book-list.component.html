@@ -1,8 +1,29 @@
-<button (click)="addBook()">Add Book</button>
-<ul>
-  <li *ngFor="let book of books">
-    {{ book.name }} - {{ book.author }} - ${{ book.price }}
-    <button *ngIf="book.id" (click)="editBook(book.id)">Edit</button>
-    <button *ngIf="book.id" (click)="deleteBook(book.id)">Delete</button>
-  </li>
-</ul>
+<div class="container">
+  <h2 class="my-4">Book List</h2>
+  <button (click)="addBook()" class="btn btn-success mb-3">Add Book</button>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Author</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of books">
+        <td>{{ book.name }}</td>
+        <td>{{ book.author }}</td>
+        <td>${{ book.price }}</td>
+        <td>
+          <button (click)="editBook(book.id)" class="btn btn-warning btn-sm">
+            Edit
+          </button>
+          <button (click)="deleteBook(book.id)" class="btn btn-danger btn-sm">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

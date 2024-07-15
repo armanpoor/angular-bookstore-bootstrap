@@ -1,35 +1,44 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private isLoggedIn = false;
-  private isAdmin = false;
+  private apiUrl = 'http://localhost:5000/api/auth'; // Replace with your API URL
+  private token: string | null | undefined = '';
+  isUserAdmin: any;
 
-  login({
-    username,
-    password,
-  }: {
-    username: string;
-    password: string;
-  }): Observable<boolean> {
-    this.isLoggedIn = username === 'admin' && password === 'admin';
-    this.isAdmin = this.isLoggedIn;
-    return of(this.isLoggedIn);
+  constructor(private http: HttpClient) {}
+
+  login(username: string, password: string): Observable<any> {
+    return this.http
+      .post<any>(`${this.apiUrl}/login`, { username, password })
+      .pipe(
+        tap((response) => {
+          const token = response.token;
+          if (token !== null && token !== undefined) {
+            this.token = token as string;
+            localStorage.setItem('authToken', this.token);
+          } else {
+            this.token = ''; // Handle the case where token is undefined
+          }
+        })
+      );
   }
 
-  logout(): void {
-    this.isLoggedIn = false;
-    this.isAdmin = false;
+  logout() {
+    this.token = '';
+    localStorage.removeItem('authToken');
   }
 
-  get isAuthenticated(): boolean {
-    return this.isLoggedIn;
+  isAuthenticated(): boolean {
+    return !!this.token;
   }
 
-  get isUserAdmin(): boolean {
-    return this.isAdmin;
+  getToken(): string | null {
+    return this.token || null; // return an empty string if token is null
   }
 }

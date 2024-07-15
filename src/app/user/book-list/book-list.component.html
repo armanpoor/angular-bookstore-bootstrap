@@ -1,7 +1,10 @@
-<input [(ngModel)]="filter" placeholder="Search books by name" />
-<ul>
-  <li *ngFor="let book of filterBooks()">
-    {{ book.name }} - ${{ book.price }}
-    <a [routerLink]="['/book', book.id]">View Details</a>
-  </li>
-</ul>
+<div class="container">
+  <h2 class="my-4">Book List</h2>
+  <input [(ngModel)]="filter" placeholder="Search books by name" class="form-control mb-3">
+  <ul class="list-group">
+    <li *ngFor="let book of filterBooks()" class="list-group-item d-flex justify-content-between align-items-center">
+      {{ book.name }} - ${{ book.price }}
+      <a [routerLink]="['/book', book.id]" class="btn btn-info btn-sm">View Details</a>
+    </li>
+  </ul>
+</div>
