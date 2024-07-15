@@ -1,22 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
+import { environment } from '../../environment/environment';
+
+interface LoginResponse {
+  token: string;
+}
 
 @Injectable({
   providedIn: 'root',
 })
-
 export class AuthService {
-  private apiUrl = 'http://localhost:5000/api/auth'; // Replace with your API URL
+  private apiUrl = environment.apiUrl + '/auth';
   private token: string | null | undefined = '';
   isUserAdmin: any;
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<any> {
+  login(username: string, password: string): Observable<LoginResponse> {
     return this.http
-      .post<any>(`${this.apiUrl}/login`, { username, password })
+      .post<LoginResponse>(`${this.apiUrl}/login`, { username, password })
       .pipe(
         tap((response) => {
           const token = response.token;
@@ -26,6 +30,12 @@ export class AuthService {
           } else {
             this.token = ''; // Handle the case where token is undefined
           }
+        }),
+        map((response) => {
+          if (response && response.token) {
+            localStorage.setItem('currentUser', JSON.stringify(response));
+          }
+          return response;
         })
       );
   }
